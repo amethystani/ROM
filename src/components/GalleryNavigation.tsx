@@ -12,21 +12,24 @@ interface GalleryNavigationProps {
 
 const GalleryNavigation = ({ sections, activeSection, onSectionChange }: GalleryNavigationProps) => {
   return (
-    <nav className="sticky top-0 z-20 bg-background/95 backdrop-blur-sm border-b border-border py-6 px-6">
+    <nav className="sticky top-0 z-20 bg-background/98 backdrop-blur-md border-b border-border/50 py-8 px-6 shadow-sm">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center justify-center gap-2 flex-wrap">
+        <div className="flex items-center justify-center gap-3 flex-wrap">
           {sections.map((section) => (
             <Button
               key={section.id}
               variant={activeSection === section.id ? "default" : "outline"}
-              onClick={() => onSectionChange(section.id)}
-              className={`font-serif text-base transition-all duration-300 ${
+              className={`font-serif text-base transition-all duration-500 ease-out ${
                 activeSection === section.id 
-                  ? "bg-gradient-to-r from-gold to-gold-light text-primary-foreground shadow-[var(--shadow-elegant)] scale-105" 
-                  : "hover:border-gold hover:text-gold"
+                  ? "bg-gradient-to-r from-gold to-gold-light text-primary-foreground shadow-[var(--shadow-elegant)] scale-105 border-gold" 
+                  : "hover:border-gold/60 hover:text-gold hover:bg-gold/5 hover:scale-[1.02]"
               }`}
+              onClick={() => {
+                // Toggle: if already active, deselect; otherwise select
+                onSectionChange(activeSection === section.id ? "" : section.id);
+              }}
             >
-              {section.icon && <span className="mr-2">{section.icon}</span>}
+              {section.icon && <span className="mr-2 text-lg">{section.icon}</span>}
               {section.name}
             </Button>
           ))}

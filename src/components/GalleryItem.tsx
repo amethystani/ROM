@@ -4,16 +4,26 @@ interface GalleryItemProps {
   imageUrl: string;
   title: string;
   description?: string;
+  detailedRomanDescription?: string;
+  onItemClick?: () => void;
+  isEmpressImage?: boolean;
 }
 
-const GalleryItem = ({ imageUrl, title, description }: GalleryItemProps) => {
+const GalleryItem = ({ imageUrl, title, description, detailedRomanDescription, onItemClick, isEmpressImage }: GalleryItemProps) => {
   const [isHovered, setIsHovered] = useState(false);
+
+  const handleClick = () => {
+    if (onItemClick && detailedRomanDescription) {
+      onItemClick();
+    }
+  };
 
   return (
     <div 
-      className="transition-all duration-500 hover:scale-[1.02] animate-fade-in baroque-frame"
+      className={`transition-all duration-500 hover:scale-[1.02] animate-fade-in baroque-frame ${detailedRomanDescription ? 'cursor-pointer' : ''}`}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={handleClick}
     >
       {/* Ornate Baroque Frame with curves and flourishes */}
       <div className="relative p-6 bg-gradient-to-br from-gold via-gold-light to-gold shadow-[var(--shadow-frame)]" 
@@ -41,8 +51,13 @@ const GalleryItem = ({ imageUrl, title, description }: GalleryItemProps) => {
                 src={imageUrl}
                 alt={title}
                 className={`w-full h-full object-cover transition-transform duration-700 ${
-                  isHovered ? "scale-110" : "scale-100"
+                  !isEmpressImage && (isHovered ? "scale-110" : "scale-100")
                 }`}
+                style={isEmpressImage ? {
+                  objectPosition: '30% center',
+                  transform: isHovered ? 'scale(1.35)' : 'scale(1.25)',
+                  transition: 'transform 0.7s ease'
+                } : {}}
               />
               
               <div className={`absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent transition-opacity duration-500 ${
@@ -57,28 +72,6 @@ const GalleryItem = ({ imageUrl, title, description }: GalleryItemProps) => {
               </div>
             </div>
           </div>
-          
-          {/* Baroque corner ornaments - curved flourishes */}
-          <svg className="absolute -top-1 -left-1 w-12 h-12 text-gold-light" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
-            <path d="M 2 12 Q 2 2 12 2 L 8 2 Q 4 2 4 6 L 4 10 Q 4 8 6 8 L 10 8 Q 8 8 8 10 L 8 12 Z" fill="currentColor"/>
-          </svg>
-          <svg className="absolute -top-1 -right-1 w-12 h-12 text-gold-light rotate-90" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
-            <path d="M 2 12 Q 2 2 12 2 L 8 2 Q 4 2 4 6 L 4 10 Q 4 8 6 8 L 10 8 Q 8 8 8 10 L 8 12 Z" fill="currentColor"/>
-          </svg>
-          <svg className="absolute -bottom-1 -right-1 w-12 h-12 text-gold-light rotate-180" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
-            <path d="M 2 12 Q 2 2 12 2 L 8 2 Q 4 2 4 6 L 4 10 Q 4 8 6 8 L 10 8 Q 8 8 8 10 L 8 12 Z" fill="currentColor"/>
-          </svg>
-          <svg className="absolute -bottom-1 -left-1 w-12 h-12 text-gold-light -rotate-90" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
-            <path d="M 2 12 Q 2 2 12 2 L 8 2 Q 4 2 4 6 L 4 10 Q 4 8 6 8 L 10 8 Q 8 8 8 10 L 8 12 Z" fill="currentColor"/>
-          </svg>
-          
-          {/* Side decorative elements - baroque scrollwork */}
-          <svg className="absolute top-1/2 -left-2 w-8 h-16 -translate-y-1/2 text-gold" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
-            <path d="M 6 2 Q 2 8 6 14 Q 4 8 6 2" fill="currentColor"/>
-          </svg>
-          <svg className="absolute top-1/2 -right-2 w-8 h-16 -translate-y-1/2 text-gold rotate-180" style={{ filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' }}>
-            <path d="M 6 2 Q 2 8 6 14 Q 4 8 6 2" fill="currentColor"/>
-          </svg>
         </div>
       </div>
     </div>
